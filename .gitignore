@@ -1,0 +1,33 @@
+# === Dữ liệu thô Kaggle — KHÔNG đẩy (quá nặng, >100MB, teammate tự tải từ Kaggle) ===
+kaggle_fishing/
+*.csv
+!data/samples/*.csv
+
+# === File JSON đã xử lý — VẪN ĐẨY (nhỏ, là output cần chia sẻ) ===
+!data/samples/*.json
+
+# === Môi trường ảo Python — mỗi người tự tạo ===
+venv/
+.venv/
+env/
+
+# === File Python tự biên dịch ===
+__pycache__/
+*.py[cod]
+*$py.class
+
+# === Cache tự sinh khi chạy ===
+.cache/
+.pytest_cache/
+.mypy_cache/
+
+# === API key / secrets — TUYỆT ĐỐI không đẩy ===
+.env
+*.key
+secrets.json
+
+# === Rác hệ điều hành / IDE ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
