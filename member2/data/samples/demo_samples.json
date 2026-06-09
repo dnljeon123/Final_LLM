@@ -1,0 +1,32 @@
+[
+  {
+    "name": "phishing_bank_urgent",
+    "label": 1,
+    "text": "From: security@bank-of-america-alerts.com\nSubject: URGENT: Your account has been suspended\n\nDear Customer,\n\nWe detected suspicious activity on your account. Your account has been temporarily suspended for your protection. You must verify your identity within 24 hours to avoid permanent closure.\n\nClick here to verify immediately: http://bank0famerica-secure-login.com/verify?id=84729\n\nFailure to act will result in the loss of all account access.\n\nBank of America Security Team"
+  },
+  {
+    "name": "phishing_invoice_scam",
+    "label": 1,
+    "text": "From: invoicing@dhl-shipping-notice.net\nSubject: Your package delivery failed - Action required\n\nHello,\n\nWe were unable to deliver your package (tracking #DHL-2847291) because the delivery fee of $3.85 was not paid.\n\nTo reschedule delivery, pay the outstanding fee here: hxxp://dhl-redelivery-pay.com/track/2847291\n\nIf payment is not received within 48 hours, your package will be returned to sender.\n\nDHL Express Customer Service"
+  },
+  {
+    "name": "phishing_credential_harvest",
+    "label": 1,
+    "text": "From: it-support@micros0ft-account.com\nSubject: Microsoft password expires today\n\nYour Microsoft account password expires in 4 hours. To prevent loss of access to your email, files, and apps, please confirm your current password to extend it.\n\nConfirm password: https://microsoft-account-keepactive.com/login\n\nThis is an automated message from IT Support."
+  },
+  {
+    "name": "legit_newsletter",
+    "label": 0,
+    "text": "From: newsletter@stripe.com\nSubject: Stripe weekly digest: New features and updates\n\nHi there,\n\nHere's what's new at Stripe this week:\n\n- New API: Subscription schedules now support proration previews\n- Updated docs for Stripe Checkout migration\n- Webinar: Best practices for fraud prevention (Wed 2pm PT)\n\nRead the full update on our blog: https://stripe.com/blog/weekly-2024-w42\n\nThanks for building with Stripe.\nThe Stripe Team\n\nUnsubscribe: https://stripe.com/unsubscribe"
+  },
+  {
+    "name": "legit_meeting_request",
+    "label": 0,
+    "text": "From: sarah.lee@acme-consulting.com\nSubject: Meeting follow-up: Q4 planning notes\n\nHi team,\n\nThanks for joining the Q4 planning session this morning. As discussed, I've attached the notes and action items.\n\nKey takeaways:\n- Marketing budget approved at $480K\n- Product roadmap finalized; engineering kicks off next Monday\n- Need volunteers for the new customer success initiative\n\nPlease review and let me know if I missed anything. Next sync is on Tuesday at 2pm.\n\nBest,\nSarah\nSarah Lee | Director of Operations\nAcme Consulting | sarah.lee@acme-consulting.com"
+  },
+  {
+    "name": "legit_github_notification",
+    "label": 0,
+    "text": "From: notifications@github.com\nSubject: [user/repo] New pull request: Fix race condition in token refresh (#284)\n\nA new pull request was opened:\n\n#284 Fix race condition in token refresh\nOpened by @contributor-x\n\nThis PR addresses the issue described in #281. Changes include:\n- Add mutex around token refresh logic\n- Add unit test demonstrating the race\n- Update CHANGELOG\n\nReview at: https://github.com/user/repo/pull/284\n\n--\nYou are receiving this because you're a maintainer of this repo.\nManage notifications: https://github.com/settings/notifications"
+  }
+]
