@@ -16,8 +16,12 @@ class PhishingMetricsEvaluator:
 
     def load_ground_truth(self, dataset_path: str) -> list:
         logging.info(f"Ingesting ground truth dataset from: {dataset_path}")
-        with open(dataset_path, "r", encoding="utf-8") as f:
-            raw_data = json.load(f)
+        try:
+            with open(dataset_path, "r", encoding="utf-8") as f:
+                raw_data = json.load(f)
+        except UnicodeDecodeError:
+            with open(dataset_path, "r", encoding="utf-16") as f:
+                raw_data = json.load(f)
         
         return [{
             "id": item.get("name", f"record_{idx}"),
@@ -29,31 +33,37 @@ class PhishingMetricsEvaluator:
         logging.info(f"Parsing prediction log from: {txt_path}")
         predictions = []
         
-        with open(txt_path, "r", encoding="utf-8") as f:
-            for line in f:
-                if "] verdict=" not in line:
-                    continue
+        try:
+            with open(txt_path, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+        except UnicodeDecodeError:
+            with open(txt_path, "r", encoding="utf-16") as f:
+                lines = f.readlines()
                 
-                verdict_match = re.search(r"verdict=(\w+)", line)
-                latency_match = re.search(r"latency=(\d+)ms", line)
+        for line in lines:
+            if "] verdict=" not in line:
+                continue
+            
+            verdict_match = re.search(r"verdict=(\w+)", line)
+            latency_match = re.search(r"latency=(\d+)ms", line)
+            
+            if verdict_match:
+                verdict_str = verdict_match.group(1).lower()
+                pred_label = 1 if verdict_str == "phishing" else 0
+                latency = int(latency_match.group(1)) if latency_match else 0
                 
-                if verdict_match:
-                    verdict_str = verdict_match.group(1).lower()
-                    pred_label = 1 if verdict_str == "phishing" else 0
-                    latency = int(latency_match.group(1)) if latency_match else 0
-                    
-                    predictions.append({
-                        "predicted_label": pred_label,
-                        "latency_ms": latency,
-                        "status": "success"
-                    })
-                else:
-                    predictions.append({
-                        "predicted_label": 0,
-                        "latency_ms": 0,
-                        "status": "failed"
-                    })
-                    
+                predictions.append({
+                    "predicted_label": pred_label,
+                    "latency_ms": latency,
+                    "status": "success"
+                })
+            else:
+                predictions.append({
+                    "predicted_label": 0,
+                    "latency_ms": 0,
+                    "status": "failed"
+                })
+                
         return predictions
 
     def evaluate_strategy(self, predictions: list, ground_truths: list, strategy: str) -> dict:
