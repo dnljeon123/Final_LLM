@@ -8,9 +8,24 @@ The evaluation engine expects the following directory structure for inputs and w
 
 ```text
 Final_LLM/
-├── data/samples/kaggle_dataset_v2.json     # Ground truth mappings
-├── results/                                # Text logs from Member 2
-└── member3/code/
-    ├── run_experiments.py                  # Main orchestrator
-    ├── config.py                           # Central path/pricing controls
-    └── eval/                               # Output directory (Auto-generated)
+├── Final_2/                                 <-- (Member 1's Dataset Source)
+│   └── poc/
+│       └── data/
+│           └── samples/
+│               └── kaggle_dataset_v2.json
+├── member2/                                 <-- (Member 2's Result Logs)
+│   └── result/
+│       ├── zeroshot_gemini.txt
+│       ├── fewshot_gemini.txt
+│       └── cot_gemini.txt
+└── member3/                                 <-- (this module workspace)
+    ├── .gitignore
+    ├── README.md
+    └── code/
+        ├── requirements.txt
+        ├── config.py
+        ├── run_experiments.py
+        └── eval/                            <-- (this module output directory)
+            ├── results_summary.json         <-- (Final metrics)
+            ├── misclassifications/          <-- (Threat-leak error reports)
+            └── plots/                       <-- (Visual analysis)
