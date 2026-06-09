@@ -1,0 +1,25 @@
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDEs
+.vscode/
+.idea/
+
+# Local data and dynamically generated outputs
+# (Uncomment the lines below if you do not want to track results in Git)
+# data/samples/
+# results/
+# eval/plots/
+# eval/misclassifications/
+# eval/results_summary.json

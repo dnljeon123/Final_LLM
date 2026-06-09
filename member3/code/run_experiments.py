@@ -1,57 +1,50 @@
 import os
 import json
 import logging
-import random
-from eval.harness import PhishingEvaluationHarness
-from eval.analyze import PhishingEvaluationAnalyzer
+import config
+from eval.evaluator import PhishingMetricsEvaluator
 
 logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(levelname)s: %(message)s")
 
 def main():
     print("\n" + "="*75)
-    print("           CYBER SECURITY EXPERIMENT EXECUTION ENGINE (WEEK 15)          ")
-    print("=========================================================================")
-
-    harness = PhishingEvaluationHarness()
-    analyzer = PhishingEvaluationAnalyzer()
-
-    dataset_path = "data/samples/kaggle_dataset_v2.json"
-    records = harness.load_evaluation_data(dataset_path)
-
-    test_size = int(len(records) * 0.2)
-    random.seed(42)
-    test_records = random.sample(records, test_size)
-    
-    logging.info(f"Ingested {len(test_records)} evaluation records from the central dataset.")
-
-    results_by_strategy = {}
-    strategies = ["zero_shot", "few_shot", "chain_of_thought"]
-
-    for strategy in strategies:
-        print("\n" + "-"*75)
-        raw_results = harness.execute_batch_evaluation(test_records, strategy)
-        audited_results = analyzer.run_dual_llm_as_a_judge(raw_results)
-        metrics = analyzer.analyze_metrics(audited_results)
-        results_by_strategy[strategy] = metrics
-
-        print(f"\n=> EXPERIMENT RESULTS: {strategy.upper()} STRATEGY")
-        print(f"   Accuracy            : {metrics['accuracy']:.4f}")
-        print(f"   Recall (Phish Catch): {metrics['recall']:.4f}")
-        print(f"   Security F2-Score   : {metrics['f2_score']:.4f}")
-        print(f"   Avg Latency         : {metrics['average_latency_sec']:.3f} seconds")
-        print(f"   Total Token Cost    : ${metrics['total_cost_usd']:.5f}")
-        
-        analyzer.print_text_confusion_matrix(metrics["confusion_matrix"])
-
-    output_report_path = "eval/results_summary.json"
-    os.makedirs(os.path.dirname(output_report_path), exist_ok=True)
-    with open(output_report_path, "w", encoding="utf-8") as f:
-        json.dump(results_by_strategy, f, indent=4, ensure_ascii=False)
-        
-    logging.info(f"Evaluation summary compiled successfully and exported to {output_report_path}")
-    print("\n" + "="*75)
-    print("                EXPERIMENTS COMPLETED - PIPELINE INTEGRATION OK          ")
+    print("           CYBER SECURITY EXPERIMENT EXECUTION ENGINE (WEEK 16)          ")
     print("=========================================================================\n")
+
+    evaluator = PhishingMetricsEvaluator()
+    
+    try:
+        ground_truths = evaluator.load_ground_truth(config.DATASET_PATH)
+    except FileNotFoundError:
+        logging.error(f"Ground truth dataset not found at {config.DATASET_PATH}. Please verify the path in config.py.")
+        return
+
+    final_results = {}
+
+    for strategy, filepath in config.STRATEGY_FILES.items():
+        try:
+            predictions = evaluator.parse_prediction_log(filepath)
+            metrics = evaluator.evaluate_strategy(predictions, ground_truths, strategy)
+            
+            evaluator.print_performance_report(metrics, strategy)
+            final_results[strategy] = metrics
+        except FileNotFoundError:
+            logging.error(f"Prediction log missing at {filepath}. Skipping {strategy}.")
+
+    evaluator.generate_visualizations(final_results, config.PLOTS_DIR)
+
+    # Clean raw array lists from JSON before exporting
+    for strat in final_results:
+        final_results[strat].pop("raw_latencies", None)
+        final_results[strat].pop("bucket_accuracy", None)
+
+    os.makedirs(os.path.dirname(config.OUTPUT_REPORT_PATH), exist_ok=True)
+    with open(config.OUTPUT_REPORT_PATH, "w", encoding="utf-8") as f:
+        json.dump(final_results, f, indent=4, ensure_ascii=False)
+        
+    logging.info(f"Evaluation metrics compiled and exported to {config.OUTPUT_REPORT_PATH}")
+    logging.info(f"Misclassifications exported to '{config.MISCLASSIFICATIONS_DIR}/' directory.")
+    logging.info(f"Graphs successfully rendered in '{config.PLOTS_DIR}/' directory.")
 
 if __name__ == "__main__":
     main()

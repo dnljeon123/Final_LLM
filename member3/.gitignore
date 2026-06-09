@@ -1,0 +1,13 @@
+# Python cache specific to Member 3's code
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local environments (if you use a local venv inside your folder)
+env/
+venv/
+
+# Ignore dynamically generated evaluation outputs to prevent Git bloat
+code/eval/plots/*.png
+code/eval/misclassifications/*.json
+code/eval/results_summary.json
