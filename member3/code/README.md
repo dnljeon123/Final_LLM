@@ -22,10 +22,11 @@ Final_LLM/
     ├── .gitignore
     ├── README.md
     └── code/
-        ├── requirements.txt
-        ├── config.py
-        ├── run_experiments.py
-        └── eval/                            <-- (this module output directory)
+        ├── requirements.txt				
+        ├── config.py						
+        ├── run_experiments.py				 <-- (Run this file)
+		├
+        └── eval/                            <-- (output directory)
             ├── results_summary.json         <-- (Final metrics)
             ├── misclassifications/          <-- (Threat-leak error reports)
             └── plots/                       <-- (Visual analysis)
